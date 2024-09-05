@@ -12,14 +12,14 @@ class SignUpInfoStateNotifier extends StateNotifier<SignUpInfo> {
     return state;
   }
 
-  SignUpInfo phoneAuthed()  {
+  bool phoneAuthed()  {
     state.isPhoneAuthed = true;
-    return state;
+    return state.isPhoneAuthed;
   }
 
-  SignUpInfo termChecked()  {
-    state.isTermsChecked = true;
-   return state;
+  bool termChecked(bool selected)  {
+    state.isTermsChecked = selected;
+    return state.isTermsChecked;
   }
 }
 

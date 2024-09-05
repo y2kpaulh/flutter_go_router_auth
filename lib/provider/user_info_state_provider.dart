@@ -11,7 +11,7 @@ class UserInfoStateNotifier extends StateNotifier<UserDBInfo?> {
   }
 
   Future<UserDBInfo?> saveUserInfo(UserDBInfo userDBInfo) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 50));
     state = userDBInfo;
     return userDBInfo;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:user_auth_example/provider/sign_up_info_provider.dart';
@@ -16,10 +17,18 @@ class SignUpScreen extends StatefulHookConsumerWidget {
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   UserDBInfo? userDBInfo;
   String userInfoText = '';
+  bool _termChecked = false;
+
+
 
   @override
   Widget build(BuildContext context) {
     final signUpInfo = ref.watch(signUpInfoStateProvider);
+    final signUpInfoNotifier = ref.read(signUpInfoStateProvider.notifier);
+
+    useMemoized((){
+      _termChecked = signUpInfo.isTermsChecked;
+    },[]);
 
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +47,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             const SizedBox(
               height: 10,
             ),
+
             ElevatedButton(
                 onPressed: () async {
                   try {
@@ -69,17 +79,30 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             const SizedBox(
               height: 10,
             ),
-            ElevatedButton(
-                onPressed: () async {
-                  try {
-                     ref
-                        .read(signUpInfoStateProvider.notifier)
-                        .termChecked();
-                  } catch (e) {
-                    debugPrint('phone auth error!');
-                  }
-                },
-                child: const Text('Term Check')),
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       try {
+            //          ref
+            //             .read(signUpInfoStateProvider.notifier)
+            //             .termChecked();
+            //       } catch (e) {
+            //         debugPrint('phone auth error!');
+            //       }
+            //     },
+            //     child: const Text('Term Check')),
+            Checkbox(value: _termChecked, onChanged: (bool? newValue) {
+              // Call the termChecked method with the new value
+              try {
+            setState(() {
+              _termChecked = signUpInfoNotifier
+                  .termChecked(newValue!);
+            });
+
+
+              } catch (e) {
+                debugPrint('phone auth error!');
+              }
+            }),
             const SizedBox(
               height: 10,
             ),

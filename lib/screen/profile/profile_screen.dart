@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:user_auth_example/provider/login_info_state_provider.dart';
 
+import '../../provider/user_info_state_provider.dart';
+
 class ProfileScreen extends StatefulHookConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -13,6 +15,8 @@ class ProfileScreen extends StatefulHookConsumerWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final userDBInfo = ref.watch(userInfoStateProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Profile'),),
       body: Center(
@@ -20,8 +24,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Profile'),
-            const SizedBox(height: 10,),
+            if(userDBInfo!=null)
+             Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Text('name: ${userDBInfo.name}'),
+                 Text('phone: ${userDBInfo.phone}')
+               ],
+             ),
             const SizedBox(height: 10,),
             ElevatedButton(
               onPressed: () async {
@@ -31,7 +41,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 try {
                   // 사용자 ID 삭제
                   await ref.read(loginInfoStateProvider.notifier).deleteUserId();
-
                   // 로그아웃 후 로그인 화면으로 이동
                   if (currentContext.mounted) {
                     currentContext.go('/login'); // 로그인 화면으로 리디렉션

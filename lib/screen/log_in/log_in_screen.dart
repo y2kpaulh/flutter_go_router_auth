@@ -44,7 +44,6 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                               _isLoading = true;
                             });
                           }
-
                           try {
                             await ref
                                 .read(loginInfoStateProvider.notifier)
