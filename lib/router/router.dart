@@ -14,16 +14,15 @@ part 'router.g.dart';
 
 @riverpod
 GoRouter router(RouterRef ref) {
+  final userId = ref.watch(loginInfoStateProvider);
+  final userDBInfo = ref.watch(userInfoStateProvider.notifier);
+  final signUpInfo = ref.watch(signUpInfoStateProvider.notifier);
 
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: true,
     observers: [RouterObserver()],
     redirect: (context, state) async {
-      final userId = ref.watch(loginInfoStateProvider);
-      final userDBInfo = ref.watch(userInfoStateProvider.notifier);
-      final signUpInfo = ref.watch(signUpInfoStateProvider.notifier);
-
       // 사용자 ID와 사용자 정보를 비동기적으로 가져옵니다.
       final userInfo = await userDBInfo.getUserInfo();
 
@@ -79,13 +78,6 @@ GoRouter router(RouterRef ref) {
           return const LogInScreen();
         },
       ),
-      // GoRoute(
-      //   path: '/phoneauth',
-      //   name: 'phoneauth',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return const PhoneAuthScreen();
-      //   },
-      // ),
       GoRoute(
         path: '/signup',
         name: 'signup',
