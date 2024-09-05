@@ -33,7 +33,7 @@ class AppState extends ConsumerState<App> with  WidgetsBindingObserver {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Flutter Demo',
+      title: 'Go Router Auth Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
